@@ -8,38 +8,111 @@ import {
 
 const COLLECTION = "menus";
 
-// 🧩 Create Menu
-export const createMenu = async (data: any): Promise<string> => {
-  return await createDocument(COLLECTION, data);
+// Define the Menu type
+export interface Menu {
+  id?: number;
+  name: string;
+  price: number;
+  category: string;
+  description?: string;
+}
+
+// Create a new menu
+export const createMenu = async (data: Omit<Menu, "id">): Promise<Menu> => {
+  try {
+    if (!data.name || data.price === undefined || !data.category) {
+      throw new Error("Missing required menu fields");
+    }
+
+    const id = await createDocument<Menu>(COLLECTION, data);
+    const newMenu: Menu = {
+      ...data,
+      id: Number.isNaN(Number(id)) ? 0 : Number(id),
+    };
+    return newMenu;
+  } catch (error) {
+    console.error("Error creating menu:", error);
+    throw new Error("Failed to create menu");
+  }
 };
 
-// 🧩 Get All Menus
-export const getMenus = async (): Promise<any[]> => {
-  const snapshot = await getDocuments(COLLECTION);
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+// Get all menus
+export const getMenus = async (): Promise<Menu[]> => {
+  try {
+    const snapshot = await getDocuments<Menu>(COLLECTION);
+    return snapshot.docs.map((doc) => {
+      const data = doc.data() as Omit<Menu, "id">;
+      if (!data.name || data.price === undefined || !data.category) {
+        throw new Error(`Invalid menu data in document ${doc.id}`);
+      }
+      return {
+        ...data,
+        id: Number.isNaN(Number(doc.id)) ? 0 : Number(doc.id),
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching menus:", error);
+    throw new Error("Failed to fetch menus");
+  }
 };
 
-// 🧩 Get Menu by ID
-export const getMenuById = async (id: string): Promise<any | null> => {
-  const doc = await getDocumentById(COLLECTION, id);
-  return doc ? { id: doc.id, ...doc.data() } : null;
+// Get menu by ID
+export const getMenuById = async (id: string): Promise<Menu | null> => {
+  try {
+    const doc = await getDocumentById<Menu>(COLLECTION, id);
+    if (!doc || !doc.exists) return null;
+
+    const data = doc.data() as Omit<Menu, "id">;
+    if (!data.name || data.price === undefined || !data.category) {
+      throw new Error(`Invalid menu data in document ${doc.id}`);
+    }
+
+    return {
+      ...data,
+      id: Number.isNaN(Number(doc.id)) ? 0 : Number(doc.id),
+    };
+  } catch (error) {
+    console.error("Error fetching menu:", error);
+    throw new Error("Failed to fetch menu");
+  }
 };
 
-// 🧩 Update Menu
-export const updateMenu = async (id: string, updates: any): Promise<any | null> => {
-  const doc = await getDocumentById(COLLECTION, id);
-  if (!doc) return null;
+// Update menu
+export const updateMenu = async (
+  id: string,
+  updates: Partial<Omit<Menu, "id">>
+): Promise<Menu | null> => {
+  try {
+    if (!updates || Object.keys(updates).length === 0) {
+      throw new Error("No fields provided for update");
+    }
 
-  await updateDocument(COLLECTION, id, updates);
-  const updatedDoc = await getDocumentById(COLLECTION, id);
-  return updatedDoc ? { id: updatedDoc.id, ...updatedDoc.data() } : null;
+    await updateDocument<Menu>(COLLECTION, id, updates);
+    const updatedDoc = await getDocumentById<Menu>(COLLECTION, id);
+    if (!updatedDoc || !updatedDoc.exists) return null;
+
+    const updatedData = updatedDoc.data() as Omit<Menu, "id">;
+    if (!updatedData.name || updatedData.price === undefined || !updatedData.category) {
+      throw new Error(`Invalid menu data in document ${updatedDoc.id}`);
+    }
+
+    return {
+      ...updatedData,
+      id: Number.isNaN(Number(updatedDoc.id)) ? 0 : Number(updatedDoc.id),
+    };
+  } catch (error) {
+    console.error("Error updating menu:", error);
+    throw new Error("Failed to update menu");
+  }
 };
 
-// 🧩 Delete Menu
+// Delete menu
 export const deleteMenu = async (id: string): Promise<boolean> => {
-  const doc = await getDocumentById(COLLECTION, id);
-  if (!doc) return false;
-
-  await deleteDocument(COLLECTION, id);
-  return true;
+  try {
+    await deleteDocument(COLLECTION, id);
+    return true;
+  } catch (error) {
+    console.error("Error deleting menu:", error);
+    throw new Error("Failed to delete menu");
+  }
 };

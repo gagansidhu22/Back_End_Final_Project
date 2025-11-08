@@ -1,8 +1,6 @@
 import { db } from "../../config/firebaseConfig";
+import { Firestore, DocumentReference, QuerySnapshot, DocumentSnapshot, Transaction } from "firebase-admin/firestore";
 
-/**
- * Creates a new document in a Firestore collection.
- */
 export const createDocument = async <T>(
   collectionName: string,
   data: Partial<T>,

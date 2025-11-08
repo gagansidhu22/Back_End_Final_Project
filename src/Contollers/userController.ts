@@ -1,52 +1,40 @@
-import * as userService from "../Contollers/userController";
 import { Request, Response } from "express";
+import * as userService from "../services/userService";
 
-// Create User
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = await userService.createUser(req.body);
     res.status(201).json({ id });
-  } catch (err) {
-    res.status(500).json({ message: "Failed to create user", error: (err as Error).message });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to create user" });
   }
 };
 
-// Get All Users
-export const getUsers = async (_req: Request, res: Response) => {
+export const getUsers = async (_req: Request, res: Response): Promise<void> => {
   try {
     const users = await userService.getUsers();
     res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch users", error: (err as Error).message });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch users" });
   }
 };
 
-// Update User
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const updatedUser = await userService.updateUser(id, req.body);
-    if (!updatedUser) {
-      res.status(404).json({ message: "User not found" });
-    } else {
-      res.json(updatedUser);
-    }
-  } catch (err) {
-    res.status(500).json({ message: "Failed to update user", error: (err as Error).message });
+    await userService.updateUser(id, req.body);
+    res.status(200).json({ message: "User updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update user" });
   }
 };
 
-// Delete User
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const success = await userService.deleteUser(id);
-    if (success) {
-      res.json({ message: "User deleted successfully" });
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
-  } catch (err) {
-    res.status(500).json({ message: "Failed to delete user", error: (err as Error).message });
+    await userService.deleteUser(id);
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete user" });
   }
 };
