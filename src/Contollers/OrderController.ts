@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as orderService from "../services/orderService";
+import * as orderService from "../services/orderServices";
 
 export const getOrders = (req: Request, res: Response) => {
   const allOrders = orderService.getOrders();

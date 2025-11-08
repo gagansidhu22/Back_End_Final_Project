@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticate, requireRole } from '../middlewares/auth';
-import { getMenus, createMenu, updateMenu, deleteMenu } from '../controllers/menuController';
+import { getMenus, createMenu, updateMenu, deleteMenu } from '../Contollers/MenuContoller';
 
 const router = Router();
 router.get('/', getMenus);

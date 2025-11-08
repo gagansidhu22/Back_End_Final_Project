@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticate, requireRole } from '../middlewares/auth';
-import { createOrder, updateOrderStatus, getMyOrders } from '../controllers/orderController';
+import { createOrder, updateOrderStatus, getMyOrders } from '../Contollers/OrderController';
 
 const router = Router();
 router.post('/', authenticate, createOrder);

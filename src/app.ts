@@ -1,8 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import userRoutes from './routes/users';
-import menuRoutes from './routes/menus';
-import orderRoutes from './routes/orders';
+import userRoutes from './routes/userRoutes';
+import menuRoutes from './routes/MenuRoutes';
+import orderRoutes from './routes/orderRoutes';
 
 dotenv.config();
 const app = express();

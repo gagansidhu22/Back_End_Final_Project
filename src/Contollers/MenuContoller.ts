@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as menuService from "../services/menuService";
+import * as menuService from "../services/MenuService";
 
 export const getMenus = (req: Request, res: Response) => {
   const allMenus = menuService.getMenus();

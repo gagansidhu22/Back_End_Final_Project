@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticate, requireRole } from '../middlewares/auth';
-import { createOrGetUser, getAllUsers } from '../controllers/userController';
+import { createOrGetUser, getAllUsers } from '../Contollers/userController';
 
 const router = Router();
 router.post('/', authenticate, createOrGetUser);
