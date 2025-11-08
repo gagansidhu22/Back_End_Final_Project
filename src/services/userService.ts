@@ -1,28 +1,45 @@
-import { User, users } from "../data/users";
+import {
+  createDocument,
+  getDocuments,
+  getDocumentById,
+  updateDocument,
+  deleteDocument,
+} from "../Repositories/firebaseRepository";
 
-let nextId = users.length + 1;
+const COLLECTION = "users";
 
-export const getUsers = (): User[] => users;
-
-export const getUserById = (id: number): User | undefined =>
-  users.find(u => u.id === id);
-
-export const createUser = (data: Omit<User, "id">): User => {
-  const newUser = { id: nextId++, ...data };
-  users.push(newUser);
-  return newUser;
+// Create User
+export const createUser = async (data: any): Promise<string> => {
+  return await createDocument(COLLECTION, data);
 };
 
-export const updateUser = (id: number, updates: Partial<Omit<User, "id">>): User | null => {
-  const index = users.findIndex(u => u.id === id);
-  if (index === -1) return null;
-  users[index] = { ...users[index], ...updates };
-  return users[index];
+// Get All Users
+export const getUsers = async (): Promise<any[]> => {
+  const snapshot = await getDocuments(COLLECTION);
+  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-export const deleteUser = (id: number): boolean => {
-  const index = users.findIndex(u => u.id === id);
-  if (index === -1) return false;
-  users.splice(index, 1);
+// Get User by ID
+export const getUserById = async (id: string): Promise<any | null> => {
+  const doc = await getDocumentById(COLLECTION, id);
+  return doc ? { id: doc.id, ...doc.data() } : null;
+};
+
+// Update User
+export const updateUser = async (id: string, updates: any): Promise<any | null> => {
+  const doc = await getDocumentById(COLLECTION, id);
+  if (!doc) return null;
+
+  await updateDocument(COLLECTION, id, updates);
+  const updatedDoc = await getDocumentById(COLLECTION, id);
+  return updatedDoc ? { id: updatedDoc.id, ...updatedDoc.data() } : null;
+};
+
+// Delete User
+export const deleteUser = async (id: string): Promise<boolean> => {
+  const doc = await getDocumentById(COLLECTION, id);
+  if (!doc) return false;
+
+  await deleteDocument(COLLECTION, id);
   return true;
 };

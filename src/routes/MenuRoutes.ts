@@ -1,10 +1,11 @@
-import { Router } from 'express';
-import { authenticate, requireRole } from '../middlewares/auth';
-import { getMenus, createMenu, updateMenu, deleteMenu } from '../Contollers/MenuContoller';
+import express from "express";
+import { createMenu, getMenus, updateMenu, deleteMenu } from "../Contollers/MenuContoller";
 
-const router = Router();
-router.get('/', getMenus);
-router.post('/', authenticate, requireRole(['admin','staff']), createMenu);
-router.put('/:id', authenticate, requireRole(['admin','staff']), updateMenu);
-router.delete('/:id', authenticate, requireRole('admin'), deleteMenu);
+const router = express.Router();
+
+router.post("/", createMenu);
+router.get("/", getMenus);
+router.put("/:id", updateMenu);
+router.delete("/:id", deleteMenu);
+
 export default router;

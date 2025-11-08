@@ -1,9 +1,11 @@
-import { Router } from 'express';
-import { authenticate, requireRole } from '../middlewares/auth';
-import { createOrder, updateOrderStatus, getMyOrders } from '../Contollers/OrderController';
+import express from "express";
+import { createOrder, getOrders, updateOrder, deleteOrder } from "../Contollers/OrderController";
 
-const router = Router();
-router.post('/', authenticate, createOrder);
-router.patch('/:id/status', authenticate, requireRole(['staff','admin']), updateOrderStatus);
-router.get('/my', authenticate, getMyOrders);
+const router = express.Router();
+
+router.post("/", createOrder);
+router.get("/", getOrders);
+router.put("/:id", updateOrder);
+router.delete("/:id", deleteOrder);
+
 export default router;

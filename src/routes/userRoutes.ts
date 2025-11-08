@@ -1,8 +1,11 @@
-import { Router } from 'express';
-import { authenticate, requireRole } from '../middlewares/auth';
-import { createOrGetUser, getAllUsers } from '../Contollers/userController';
+import express from "express";
+import { createUser, getUsers, updateUser, deleteUser } from "../Contollers/userController";
 
-const router = Router();
-router.post('/', authenticate, createOrGetUser);
-router.get('/', authenticate, requireRole('admin'), getAllUsers);
+const router = express.Router();
+
+router.post("/", createUser);
+router.get("/", getUsers);
+router.put("/:id", updateUser);
+router.delete("/:id", deleteUser);
+
 export default router;
