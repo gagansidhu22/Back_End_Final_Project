@@ -10,7 +10,7 @@ const COLLECTION = "menus";
 
 // Define the Menu type
 export interface Menu {
-  id?: number;
+  id?: string;
   name: string;
   price: number;
   category: string;
@@ -27,7 +27,7 @@ export const createMenu = async (data: Omit<Menu, "id">): Promise<Menu> => {
     const id = await createDocument<Menu>(COLLECTION, data);
     const newMenu: Menu = {
       ...data,
-      id: Number.isNaN(Number(id)) ? 0 : Number(id),
+      id, // keep as string
     };
     return newMenu;
   } catch (error) {
@@ -47,7 +47,7 @@ export const getMenus = async (): Promise<Menu[]> => {
       }
       return {
         ...data,
-        id: Number.isNaN(Number(doc.id)) ? 0 : Number(doc.id),
+        id: doc.id, // keep as string
       };
     });
   } catch (error) {
@@ -69,7 +69,7 @@ export const getMenuById = async (id: string): Promise<Menu | null> => {
 
     return {
       ...data,
-      id: Number.isNaN(Number(doc.id)) ? 0 : Number(doc.id),
+      id: doc.id, // keep as string
     };
   } catch (error) {
     console.error("Error fetching menu:", error);
@@ -98,7 +98,7 @@ export const updateMenu = async (
 
     return {
       ...updatedData,
-      id: Number.isNaN(Number(updatedDoc.id)) ? 0 : Number(updatedDoc.id),
+      id: updatedDoc.id, // keep as string
     };
   } catch (error) {
     console.error("Error updating menu:", error);

@@ -10,7 +10,7 @@ const COLLECTION = "orders";
 
 // Define Type for Order
 export interface Order {
-  id?: number;
+  id?: string;
   userId: string;
   menuId: string;
   quantity: number;
@@ -20,7 +20,7 @@ export interface Order {
 }
 
 // Create a new order
-export const createOrder = async (data: Omit<Order, "id">): Promise<Order> => {
+export const createOrder = async (data: Omit<Order, "id" | "createdAt">): Promise<Order> => {
   try {
     if (!data.userId || !data.menuId || data.quantity === undefined || data.totalPrice === undefined || !data.status) {
       throw new Error("Missing required order fields");
@@ -29,7 +29,8 @@ export const createOrder = async (data: Omit<Order, "id">): Promise<Order> => {
     const id = await createDocument<Order>(COLLECTION, data);
     const newOrder: Order = {
       ...data,
-      id: Number.isNaN(Number(id)) ? 0 : Number(id),
+      id, // keep as string
+      createdAt: new Date().toISOString(), // add createdAt
     };
     return newOrder;
   } catch (error) {
@@ -49,7 +50,7 @@ export const getOrders = async (): Promise<Order[]> => {
       }
       return {
         ...data,
-        id: Number.isNaN(Number(doc.id)) ? 0 : Number(doc.id),
+        id: doc.id, // keep as string
       };
     });
   } catch (error) {
@@ -71,7 +72,7 @@ export const getOrderById = async (id: string): Promise<Order | null> => {
 
     return {
       ...data,
-      id: Number.isNaN(Number(doc.id)) ? 0 : Number(doc.id),
+      id: doc.id, // keep as string
     };
   } catch (error) {
     console.error("Error fetching order:", error);
@@ -100,7 +101,7 @@ export const updateOrder = async (
 
     return {
       ...updatedData,
-      id: Number.isNaN(Number(updatedDoc.id)) ? 0 : Number(updatedDoc.id),
+      id: updatedDoc.id, // keep as string
     };
   } catch (error) {
     console.error("Error updating order:", error);
