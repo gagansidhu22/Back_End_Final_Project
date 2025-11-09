@@ -10,7 +10,7 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/', (req, res) => res.json({ ok: true }));
+app.get('/', (_req, res) => res.json({ ok: true }));
 
 app.use('/api/users', userRoutes);
 app.use('/api/menus', menuRoutes);
@@ -18,7 +18,7 @@ app.use('/api/orders', orderRoutes);
 
 // Error handler
 app.use(
-  (err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  (err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
     console.error(err);
     res.status(500).json({ message: 'Internal Server Error' });
   }

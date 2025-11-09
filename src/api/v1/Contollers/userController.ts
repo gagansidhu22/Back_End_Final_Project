@@ -1,38 +1,56 @@
 import { Request, Response } from "express";
 import * as userService from "../services/userService";
 
-export const createUser = async (req: Request, res: Response): Promise<void> => {
+export const createUser = async (req: Request, res: Response) => {
   try {
-    const id = await userService.createUser(req.body);
-    res.status(201).json({ id });
+    const newUser = await userService.createUser(req.body);
+    res.status(201).json({
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role,
+    });
   } catch (error) {
     res.status(500).json({ message: "Failed to create user" });
   }
 };
 
-export const getUsers = async (_req: Request, res: Response): Promise<void> => {
+export const getUsers = async (_req: Request, res: Response) => {
   try {
     const users = await userService.getUsers();
-    res.json(users);
+    res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch users" });
   }
 };
 
-export const updateUser = async (req: Request, res: Response): Promise<void> => {
+export const getUserById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    await userService.updateUser(id, req.body);
+    const user = await userService.getUserById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch user" });
+  }
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+  try {
+    const updated = await userService.updateUser(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.status(200).json({ message: "User updated successfully" });
   } catch (error) {
     res.status(500).json({ message: "Failed to update user" });
   }
 };
 
-export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    await userService.deleteUser(id);
+    await userService.deleteUser(req.params.id);
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Failed to delete user" });
