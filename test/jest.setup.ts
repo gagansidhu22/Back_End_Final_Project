@@ -1,4 +1,3 @@
-// ✅ Mock the Firebase config used in your project
 jest.mock("../config/firebaseConfig", () => ({
   auth: {
     verifyIdToken: jest.fn(),
@@ -28,7 +27,10 @@ jest.mock("../config/firebaseConfig", () => ({
       get: jest.fn(() =>
         Promise.resolve({
           docs: [
-            { id: "mock-id", data: () => ({ name: "Mock User", email: "mock@example.com" }) },
+            {
+              id: "mock-id",
+              data: () => ({ name: "Mock User", email: "mock@example.com" }),
+            },
           ],
         })
       ),
@@ -37,17 +39,3 @@ jest.mock("../config/firebaseConfig", () => ({
     batch: jest.fn(),
   },
 }));
-
-// ✅ Fake Firebase env vars so no real credentials are loaded
-process.env.FIREBASE_PROJECT_ID = "mock";
-process.env.FIREBASE_CLIENT_EMAIL = "mock@example.com";
-process.env.FIREBASE_PRIVATE_KEY = "mock-key";
-
-// ✅ Reset mocks between tests
-afterEach(() => {
-  jest.clearAllMocks();
-});
-
-afterAll(() => {
-  jest.resetModules();
-});
