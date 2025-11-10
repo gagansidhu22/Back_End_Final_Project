@@ -10,3 +10,4 @@ export const validateRequest = (schema: Joi.ObjectSchema, property: "body" | "pa
     next();
   };
 };
+

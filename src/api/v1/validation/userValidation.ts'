@@ -11,3 +11,6 @@ export const updateUserSchema = Joi.object({
   email: Joi.string().email(),
   role: Joi.string().valid("admin", "staff", "customer"),
 });
+
+
+
