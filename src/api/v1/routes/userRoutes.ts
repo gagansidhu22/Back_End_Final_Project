@@ -90,7 +90,6 @@ const router = express.Router();
  *         description: User not found
  */
 
-
 router.post("/", createUser);
 router.get("/", getUsers);
 router.put("/:id", updateUser);
