@@ -1,10 +1,11 @@
-import express from "express";
-import { createMenu, getMenus, updateMenu, deleteMenu } from "../Controllers/MenuContorller";
-import { validateRequest } from "../Middleware/requestValidation";
-import * as schema from "../validation/menuValidation"
-
-const router = express.Router();
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const MenuContorller_1 = require("../Controllers/MenuContorller");
+const router = express_1.default.Router();
 /**
  * @openapi
  * /menus:
@@ -92,10 +93,8 @@ const router = express.Router();
  *       404:
  *         description: Menu item not found
  */
-
-router.post("/", validateRequest(schema.createMenuSchema),createMenu);
-router.get("/", getMenus);
-router.put("/:id",validateRequest(schema.updateMenuSchema),updateMenu);
-router.delete("/:id", deleteMenu);
-
-export default router;
+router.post("/", MenuContorller_1.createMenu);
+router.get("/", MenuContorller_1.getMenus);
+router.put("/:id", MenuContorller_1.updateMenu);
+router.delete("/:id", MenuContorller_1.deleteMenu);
+exports.default = router;

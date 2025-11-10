@@ -17,22 +17,18 @@ export interface Menu {
   description?: string;
 }
 
-// Create a new menu
 export const createMenu = async (data: Omit<Menu, "id">): Promise<Menu> => {
-  try {
-    if (!data.name || data.price === undefined || !data.category) {
-      throw new Error("Missing required menu fields");
-    }
+  if (!data.name || data.price === undefined || !data.category) {
+    throw new Error("Missing required menu fields");
+  }
 
+  try {
     const id = await createDocument<Menu>(COLLECTION, data);
-    const newMenu: Menu = {
-      ...data,
-      id, // keep as string
-    };
+    const newMenu: Menu = { ...data, id };
     return newMenu;
-  } catch (error) {
-    console.error("Error creating menu:", error);
-    throw new Error("Failed to create menu");
+  } catch (error: any) {
+    console.error("Error creating menu:", error); // keeps original error
+    throw error; // rethrow the original error
   }
 };
 

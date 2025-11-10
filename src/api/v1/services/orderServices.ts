@@ -35,7 +35,7 @@ export const createOrder = async (data: Omit<Order, "id" | "createdAt">): Promis
     return newOrder;
   } catch (error) {
     console.error("Error creating order:", error);
-    throw new Error("Failed to create order");
+    throw error;
   }
 };
 
@@ -105,7 +105,7 @@ export const updateOrder = async (
     };
   } catch (error) {
     console.error("Error updating order:", error);
-    throw new Error("Failed to update order");
+    throw error;
   }
 };
 

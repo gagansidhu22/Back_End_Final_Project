@@ -1,11 +1,11 @@
-import express from "express";
-import { createOrder, getOrders, updateOrder, deleteOrder } from "../Controllers/OrderController";
-import { validateRequest } from "../Middleware/requestValidation";
-import * as schema from "../validation/orderValidation"
-
-
-const router = express.Router();
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const OrderController_1 = require("../Controllers/OrderController");
+const router = express_1.default.Router();
 /**
  * @openapi
  * /orders:
@@ -93,10 +93,8 @@ const router = express.Router();
  *       404:
  *         description: Order not found
  */
-
-router.post("/",validateRequest(schema.createOrderSchema),createOrder);
-router.get("/", getOrders);
-router.put("/:id",validateRequest(schema.updateOrderSchema),updateOrder);
-router.delete("/:id", deleteOrder);
-
-export default router;
+router.post("/", OrderController_1.createOrder);
+router.get("/", OrderController_1.getOrders);
+router.put("/:id", OrderController_1.updateOrder);
+router.delete("/:id", OrderController_1.deleteOrder);
+exports.default = router;

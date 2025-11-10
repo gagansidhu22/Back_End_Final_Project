@@ -1,5 +1,10 @@
-import Joi from "joi";
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateMenuSchema = exports.createMenuSchema = void 0;
+const joi_1 = __importDefault(require("joi"));
 /**
  * @openapi
  * components:
@@ -49,18 +54,15 @@ import Joi from "joi";
  *           description: Whether the menu item is currently available
  *           example: false
  */
-
-export const createMenuSchema = Joi.object({
-  id: Joi.string().min(2).max(4).optional(),
-  name: Joi.string().min(2).max(100).required(),
-  category: Joi.string().min(2).max(50).required(),
-  price: Joi.number().min(0).required(),
-  available: Joi.boolean().required(),
+exports.createMenuSchema = joi_1.default.object({
+    name: joi_1.default.string().min(2).max(100).required(),
+    category: joi_1.default.string().min(2).max(50).required(),
+    price: joi_1.default.number().min(0).required(),
+    available: joi_1.default.boolean().required(),
 });
-
-export const updateMenuSchema = Joi.object({
-  name: Joi.string().min(2).max(100),
-  category: Joi.string().min(2).max(50),
-  price: Joi.number().min(0),
-  available: Joi.boolean(),
+exports.updateMenuSchema = joi_1.default.object({
+    name: joi_1.default.string().min(2).max(100),
+    category: joi_1.default.string().min(2).max(50),
+    price: joi_1.default.number().min(0),
+    available: joi_1.default.boolean(),
 });

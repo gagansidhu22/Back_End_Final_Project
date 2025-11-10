@@ -6,7 +6,8 @@
     "start": "node dist/server.js",
     "build": "tsc",
     "dev": "npx ts-node src/server.ts",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "generate-docs": "ts-node scripts/generate-openapi.ts && npx @redocly/cli build-docs openapi.json --output docs/index.html"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
@@ -17,6 +18,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@redocly/cli": "^2.11.0",
     "@types/express": "^5.0.5",
     "@types/jest": "^30.0.0",
     "@types/node": "^20.19.24",

@@ -46,7 +46,7 @@ import Joi from "joi";
  *             - staff
  *             - customer
  *           example: "staff"
- */
+*/
 
 
 export const createUserSchema = Joi.object({
