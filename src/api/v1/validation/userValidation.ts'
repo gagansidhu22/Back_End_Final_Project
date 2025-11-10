@@ -1,4 +1,53 @@
 import Joi from "joi";
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     CreateUser:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - role
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The full name of the user
+ *           example: "John Doe"
+ *         email:
+ *           type: string
+ *           description: The email address of the user
+ *           example: "john.doe@example.com"
+ *         role:
+ *           type: string
+ *           description: The role assigned to the user
+ *           enum:
+ *             - admin
+ *             - staff
+ *             - customer
+ *           example: "customer"
+ *
+ *     UpdateUser:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The full name of the user
+ *           example: "Jane Doe"
+ *         email:
+ *           type: string
+ *           description: The email address of the user
+ *           example: "jane.doe@example.com"
+ *         role:
+ *           type: string
+ *           description: The role assigned to the user
+ *           enum:
+ *             - admin
+ *             - staff
+ *             - customer
+ *           example: "staff"
+ */
+
 
 export const createUserSchema = Joi.object({
   name: Joi.string().min(3).max(100).required(),
