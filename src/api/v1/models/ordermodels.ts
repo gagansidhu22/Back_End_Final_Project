@@ -1,8 +1,8 @@
 export interface Order {
-  id: string;               // Firestore document ID
-  userId: string;           // Reference to User
-  items: string[];          // Array of Menu item IDs
-  totalAmount: number;      // Calculated total
+  id: string;               
+  userId: string;           
+  items: string[];          
+  totalAmount: number;      
   status: "pending" | "preparing" | "ready" | "completed";
   createdAt?: string;
 }

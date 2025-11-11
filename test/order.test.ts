@@ -6,7 +6,7 @@ describe("Order API", () => {
   let menuId: string;
 
   beforeEach(async () => {
-    // Create a menu first (orders require a menu item)
+    // Create a menu first 
     const menuRes = await request(app)
       .post("/api/menus")
       .send({
@@ -58,7 +58,7 @@ describe("Order API", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Order updated successfully");
-    expect(res.body.order.quantity).toBe(5); // if API returns updated object
+    expect(res.body.order.quantity).toBe(5); 
   });
 
   it("DELETE /api/orders/:id should delete the order", async () => {

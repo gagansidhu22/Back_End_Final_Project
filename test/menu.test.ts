@@ -45,7 +45,7 @@ describe("Menu API", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Menu updated successfully");
-    expect(res.body.menu.name).toBe("Updated Menu"); // if API returns updated object
+    expect(res.body.menu.name).toBe("Updated Menu"); 
   });
 
   it("DELETE /api/menus/:id should delete the menu", async () => {

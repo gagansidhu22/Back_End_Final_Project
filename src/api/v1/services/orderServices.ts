@@ -29,8 +29,8 @@ export const createOrder = async (data: Omit<Order, "id" | "createdAt">): Promis
     const id = await createDocument<Order>(COLLECTION, data);
     const newOrder: Order = {
       ...data,
-      id, // keep as string
-      createdAt: new Date().toISOString(), // add createdAt
+      id, 
+      createdAt: new Date().toISOString(), 
     };
     return newOrder;
   } catch (error) {
@@ -50,7 +50,7 @@ export const getOrders = async (): Promise<Order[]> => {
       }
       return {
         ...data,
-        id: doc.id, // keep as string
+        id: doc.id, 
       };
     });
   } catch (error) {
@@ -72,7 +72,7 @@ export const getOrderById = async (id: string): Promise<Order | null> => {
 
     return {
       ...data,
-      id: doc.id, // keep as string
+      id: doc.id, 
     };
   } catch (error) {
     console.error("Error fetching order:", error);
@@ -101,7 +101,7 @@ export const updateOrder = async (
 
     return {
       ...updatedData,
-      id: updatedDoc.id, // keep as string
+      id: updatedDoc.id, 
     };
   } catch (error) {
     console.error("Error updating order:", error);

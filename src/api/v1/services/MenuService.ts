@@ -27,8 +27,8 @@ export const createMenu = async (data: Omit<Menu, "id">): Promise<Menu> => {
     const newMenu: Menu = { ...data, id };
     return newMenu;
   } catch (error: any) {
-    console.error("Error creating menu:", error); // keeps original error
-    throw error; // rethrow the original error
+    console.error("Error creating menu:", error); 
+    throw error; 
   }
 };
 
@@ -43,7 +43,7 @@ export const getMenus = async (): Promise<Menu[]> => {
       }
       return {
         ...data,
-        id: doc.id, // keep as string
+        id: doc.id, 
       };
     });
   } catch (error) {
@@ -65,7 +65,7 @@ export const getMenuById = async (id: string): Promise<Menu | null> => {
 
     return {
       ...data,
-      id: doc.id, // keep as string
+      id: doc.id, 
     };
   } catch (error) {
     console.error("Error fetching menu:", error);
@@ -94,7 +94,7 @@ export const updateMenu = async (
 
     return {
       ...updatedData,
-      id: updatedDoc.id, // keep as string
+      id: updatedDoc.id, 
     };
   } catch (error) {
     console.error("Error updating menu:", error);

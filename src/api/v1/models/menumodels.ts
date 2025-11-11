@@ -1,8 +1,8 @@
 export interface Menu {
-  id: string;              // Firestore document ID
-  name: string;            // e.g., "Cheeseburger"
-  category: string;        // e.g., "Main Course", "Beverage"
+  id: string;              
+  name: string;            
+  category: string;        
   price: number;
-  available: boolean;      // Whether item is available or sold out
+  available: boolean;      
   createdAt?: string;
 }

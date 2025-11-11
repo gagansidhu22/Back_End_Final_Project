@@ -4,7 +4,7 @@ import { server } from "../src/server";
 
 const mockUsers: any[] = [];
 
-// 🧩 Mock Firestore Repository
+// Mock Firestore Repository
 jest.mock("../src/api/v1/Repositories/firebaseRepository", () => ({
   createDocument: jest.fn().mockImplementation(async (_, data) => {
     const newUser = { id: "mock-id", ...data };
@@ -62,7 +62,7 @@ describe("User API", () => {
     expect(res.status).toBe(201);
     expect(res.body.id).toBeDefined();
 
-    createdUserId = res.body.id; // should be "mock-id"
+    createdUserId = res.body.id; 
   });
 
   it("PATCH /api/users/:id should update the user", async () => {
