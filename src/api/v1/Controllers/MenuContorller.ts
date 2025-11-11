@@ -1,4 +1,4 @@
-// src/controllers/menuController.ts
+// import statements
 import { Request, Response } from "express";
 import * as menuService from "../services/MenuService";
 
