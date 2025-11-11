@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import app from "./app";
 import { Server } from "http";
 
-// Load environment variables
+// load environment variables
 dotenv.config();
 
 const PORT: string | number = process.env.PORT || 3000;
