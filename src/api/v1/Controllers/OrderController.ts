@@ -1,13 +1,26 @@
-// src/controllers/orderController.ts
+// src/api/v1/controllers/orderController.ts
+
 import { Request, Response } from "express";
 import * as orderService from "../services/orderServices";
+import { sendEmail } from "../../../utils/emailService";
 
 export const createOrder = async (req: Request, res: Response) => {
   try {
     const id = await orderService.createOrder(req.body);
+
+    // Send email AFTER order is created
+    await sendEmail(
+      "admin@gmail.com",
+      "New Order Received",
+      `<p>A new order has been created by User ID: ${req.body.userId}</p>`
+    );
+
     res.status(201).json({ id });
   } catch (err: any) {
-    res.status(500).json({ message: "Failed to create order", error: err.message });
+    res.status(500).json({
+      message: "Failed to create order",
+      error: err.message,
+    });
   }
 };
 

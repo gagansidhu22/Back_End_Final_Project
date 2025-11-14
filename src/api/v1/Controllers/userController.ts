@@ -1,9 +1,18 @@
 import { Request, Response } from "express";
 import * as userService from "../services/userService";
+import { sendEmail } from "../../../utils/emailService";
+
 
 export const createUser = async (req: Request, res: Response) => {
   try {
     const newUser = await userService.createUser(req.body);
+    await sendEmail(
+  newUser.email,
+  "Welcome to Homeless Donation Tracker",
+  `<h2>Hello ${newUser.name},</h2>
+   <p>Your account was created successfully!</p>`
+);
+
     res.status(201).json({
       id: newUser.id,
       name: newUser.name,
