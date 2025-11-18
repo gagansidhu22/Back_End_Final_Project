@@ -1,73 +1,41 @@
 import swaggerJsdoc from "swagger-jsdoc";
-import path from "path";
 
-const swaggerOptions: swaggerJsdoc.Options = {
+export const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Restaurant API",
+      title: "API Documentation",
       version: "1.0.0",
-      description: "This is the API documentation for the Restaurant Management application.",
+      description: "Api documentation for assignment 5",
     },
-    servers: [
-      {
-        url: "http://localhost:3000/api/v1",
-        description: "Local server",
-      },
-    ],
+
     components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
       schemas: {
-        // ✅ Add everything you reference in $ref:
-        CreateMenu: {
+        CreateEmployee: {
           type: "object",
           properties: {
-            name: { type: "string", example: "Pizza" },
-            price: { type: "number", example: 12.5 },
+            name: { type: "string", example: "John Doe" },
+            email: { type: "string", example: "john@example.com" },
+            department: { type: "string", example: "HR" },
+            branchId: { type: "integer", example: 1 }
           },
-          required: ["name", "price"],
+          required: ["name", "email", "department", "branchId"]
         },
-        UpdateMenu: {
+
+        UpdateEmployee: {
           type: "object",
           properties: {
-            name: { type: "string", example: "Updated Pizza" },
-            price: { type: "number", example: 13.0 },
-          },
-        },
-        CreateOrder: {
-          type: "object",
-          properties: {
-            menuId: { type: "string", example: "12345" },
-            quantity: { type: "integer", example: 2 },
-          },
-          required: ["menuId", "quantity"],
-        },
-        Error: {
-          type: "object",
-          properties: {
-            message: { type: "string", example: "Invalid input" },
-          },
-        },
-      },
+            name: { type: "string", example: "Updated Name" },
+            email: { type: "string", example: "updated@example.com" },
+            department: { type: "string", example: "IT" },
+            branchId: { type: "integer", example: 3 }
+          }
+        }
+      }
     },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
   },
-  apis: [
-    path.resolve(__dirname, "../src/api/v1/routes/*.ts"),
-    path.resolve(__dirname, "../src/api/v1/validation/*.ts"),
-  ],
+
+  apis: ["./src/routes/*.ts"],
 };
 
-export const generateSwaggerSpec = (): object => {
-  return swaggerJsdoc(swaggerOptions);
-};
+export const generateSwaggerSpec = () => swaggerJsdoc(swaggerOptions);
