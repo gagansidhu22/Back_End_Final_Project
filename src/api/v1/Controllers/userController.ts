@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as userService from "../services/userService";
-import { sendEmail } from "../../../utils/emailService";
+import { sendEmail } from "../utils/emailService";
 
 
 export const createUser = async (req: Request, res: Response) => {
