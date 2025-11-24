@@ -1,10 +1,16 @@
-import express from "express";
-import { createUser, getUsers, updateUser, deleteUser } from "../Controllers/userController";
+import { Router } from "express";
+import authenticate from "../Middleware/authentication";
+import isAuthorized from "../Middleware/authorize";
+import {
+  createUser,
+  getUsers,
+  updateUser,
+  deleteUser
+} from "../Controllers/userController";
 import { validateRequest } from "../Middleware/requestValidation";
-import * as schema from "../validation/userValidation"
+import * as schema from "../validation/userValidation";
 
-
-const router = express.Router();
+const router = Router();
 
 /**
  * @openapi
@@ -12,91 +18,53 @@ const router = express.Router();
  *   post:
  *     summary: Create a new user
  *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/CreateUser'
- *     responses:
- *       201:
- *         description: User created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/CreateUser'
- *       400:
- *         description: Invalid input data
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
  *
  *   get:
  *     summary: Retrieve a list of users
  *     tags: [Users]
- *     responses:
- *       200:
- *         description: Users retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 users:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/CreateUser'
- *                 total:
- *                   type: integer
  *
  * /users/{id}:
  *   put:
  *     summary: Update a specific user
  *     tags: [Users]
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *         description: The unique identifier of the user
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UpdateUser'
- *     responses:
- *       200:
- *         description: User updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/UpdateUser'
- *       404:
- *         description: User not found
  *
  *   delete:
  *     summary: Delete a specific user
  *     tags: [Users]
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *         description: The unique identifier of the user
- *     responses:
- *       200:
- *         description: User deleted successfully
- *       404:
- *         description: User not found
  */
 
-router.post("/", validateRequest(schema.createUserSchema),createUser);
-router.get("/", getUsers);
-router.put("/:id", validateRequest(schema.updateUserSchema),updateUser);
-router.delete("/:id", deleteUser);
+// Create user — only admin
+router.post(
+  "/",
+  authenticate,
+  isAuthorized({ hasRole: ["admin"] }),
+  validateRequest(schema.createUserSchema),
+  createUser
+);
+
+// Get all users — admin + manager
+router.get(
+  "/",
+  authenticate,
+  isAuthorized({ hasRole: ["admin", "manager"] }),
+  getUsers
+);
+
+// Update user — admin only
+router.put(
+  "/:id",
+  authenticate,
+  isAuthorized({ hasRole: ["admin"] }),
+  validateRequest(schema.updateUserSchema),
+  updateUser
+);
+
+// Delete user — admin only
+router.delete(
+  "/:id",
+  authenticate,
+  isAuthorized({ hasRole: ["admin"] }),
+  deleteUser
+);
 
 export default router;
