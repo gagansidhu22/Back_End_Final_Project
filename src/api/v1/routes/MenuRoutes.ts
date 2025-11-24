@@ -1,9 +1,16 @@
-import express from "express";
-import { createMenu, getMenus, updateMenu, deleteMenu } from "../Controllers/MenuContorller";
+import { Router } from "express";
+import authenticate from "../Middleware/authentication";
+import isAuthorized from "../Middleware/authorize";
+import { 
+  createMenu, 
+  getMenus, 
+  updateMenu, 
+  deleteMenu 
+} from "../Controllers/MenuContorller";
 import { validateRequest } from "../Middleware/requestValidation";
-import * as schema from "../validation/menuValidation"
+import * as schema from "../validation/menuValidation";
 
-const router = express.Router();
+const router = Router();
 
 /**
  * @openapi
@@ -20,16 +27,6 @@ const router = express.Router();
  *     responses:
  *       201:
  *         description: Menu item created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/CreateMenu'
- *       400:
- *         description: Invalid input data
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
  *
  *   get:
  *     summary: Retrieve a list of menu items
@@ -37,17 +34,6 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: List of menu items retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 menus:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/CreateMenu'
- *                 total:
- *                   type: integer
  *
  * /menus/{id}:
  *   put:
@@ -57,45 +43,47 @@ const router = express.Router();
  *       - name: id
  *         in: path
  *         required: true
- *         schema:
- *           type: string
- *         description: The unique identifier of the menu item
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UpdateMenu'
  *     responses:
  *       200:
  *         description: Menu item updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/UpdateMenu'
- *       404:
- *         description: Menu item not found
  *
  *   delete:
  *     summary: Delete a specific menu item
  *     tags: [Menus]
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *         description: The unique identifier of the menu item
- *     responses:
- *       200:
- *         description: Menu item deleted successfully
- *       404:
- *         description: Menu item not found
  */
+ 
+// Create menu — allowed for admin or manager
+router.post(
+  "/",
+  authenticate,
+  isAuthorized({ hasRole: ["admin", "manager"] }),
+  validateRequest(schema.createMenuSchema),
+  createMenu
+);
 
-router.post("/", validateRequest(schema.createMenuSchema),createMenu);
-router.get("/", getMenus);
-router.put("/:id",validateRequest(schema.updateMenuSchema),updateMenu);
-router.delete("/:id", deleteMenu);
+// Get all menus — accessible to all authenticated users
+router.get(
+  "/",
+  authenticate,
+  isAuthorized({ hasRole: ["admin", "manager", "user"] }),
+  getMenus
+);
+
+// Update menu — only admin or manager
+router.put(
+  "/:id",
+  authenticate,
+  isAuthorized({ hasRole: ["admin", "manager"] }),
+  validateRequest(schema.updateMenuSchema),
+  updateMenu
+);
+
+// Delete menu — only admin
+router.delete(
+  "/:id",
+  authenticate,
+  isAuthorized({ hasRole: ["admin"] }),
+  deleteMenu
+);
 
 export default router;
