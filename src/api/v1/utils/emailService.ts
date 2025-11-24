@@ -1,4 +1,4 @@
-import { transporter } from "../../config/emailConfig";
+import { transporter } from "../../../../config/emailConfig";
 
 export const sendEmail = async (to: string, subject: string, html: string) => {
   try {
