@@ -27,6 +27,9 @@ app.use(accessLogger);
 
 app.use(express.json());
 
+// Setup Swagger
+setupSwagger(app);
+
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/menus', menuRoutes);
 app.use('/api/v1/orders', orderRoutes);
@@ -37,8 +40,5 @@ app.use(errorLogger);
 
 // Global error handler
 app.use(errorHandler);
-
-// Setup Swagger
-setupSwagger(app);
 
 export default app;

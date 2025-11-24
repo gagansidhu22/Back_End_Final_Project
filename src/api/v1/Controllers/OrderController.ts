@@ -2,7 +2,7 @@
 
 import { Request, Response } from "express";
 import * as orderService from "../services/orderServices";
-import { sendEmail } from "../../../utils/emailService";
+import { sendEmail } from "../utils/emailService";
 
 export const createOrder = async (req: Request, res: Response) => {
   try {
