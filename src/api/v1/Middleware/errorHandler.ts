@@ -21,7 +21,7 @@ import { errorResponse } from "../models/responseModel";
  */
 const errorHandler = (
     err: Error | null,
-    req: Request,
+    _req: Request,
     res: Response,
     _next: NextFunction
 ): void => {

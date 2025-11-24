@@ -2,3 +2,7 @@ node_modules/
 firestore.json 
 
 .env
+
+# Logs
+logs/
+*.log

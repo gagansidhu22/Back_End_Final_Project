@@ -1,10 +1,16 @@
-import { initializeApp, cert } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+// config/firebase.ts
+import admin from "firebase-admin";
 import serviceAccount from "../firestore.json";
- 
-const app = initializeApp({
-  credential: cert(serviceAccount as any),
-});
- 
-export const db = getFirestore(app);
- 
+
+// Prevent error during reloads
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+  });
+}
+
+// Export initialized services
+const auth = admin.auth();
+const db = admin.firestore();
+
+export { admin, auth, db };
