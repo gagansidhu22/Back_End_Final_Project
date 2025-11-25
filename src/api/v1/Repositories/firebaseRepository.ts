@@ -1,4 +1,4 @@
-import { db } from "../../../../config/firebaseConfig";
+import { db } from "../../../../src/config/firebaseConfig";
 
 /**
  * Creates a new document in the specified Firestore collection.

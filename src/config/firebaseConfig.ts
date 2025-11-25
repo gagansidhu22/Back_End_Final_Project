@@ -1,6 +1,6 @@
 // config/firebase.ts
 import admin from "firebase-admin";
-import serviceAccount from "../firestore.json";
+import serviceAccount from "../../firestore.json";
 
 // Prevent error during reloads
 if (!admin.apps.length) {

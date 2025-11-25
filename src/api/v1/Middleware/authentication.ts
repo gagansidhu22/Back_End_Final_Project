@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { DecodedIdToken } from "firebase-admin/auth";
 import { AuthenticationError } from "../errors/error";
-import { auth } from "../../../../config/firebaseConfig";
+import { auth } from "../../../config/firebaseConfig";
 
 const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   try {

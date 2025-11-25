@@ -3,7 +3,7 @@
   "info": {
     "title": "Restaurant API",
     "version": "1.0.0",
-    "description": "This is the API documentation for the Restaurant Management application."
+    "description": "API documentation for the Restaurant Management system"
   },
   "servers": [
     {
@@ -20,125 +20,139 @@
       }
     },
     "schemas": {
-      "CreateMenu": {
+      "Menu": {
         "type": "object",
+        "required": [
+          "id",
+          "name",
+          "price"
+        ],
         "properties": {
+          "id": {
+            "type": "string",
+            "example": "12345"
+          },
           "name": {
             "type": "string",
-            "example": "Veggie Burger",
-            "description": "The name of the menu item"
+            "example": "Pizza"
           },
           "price": {
             "type": "number",
-            "example": 12.99,
-            "description": "The price of the menu item"
-          },
-          "category": {
-            "type": "string",
-            "description": "The category of the menu item",
-            "example": "Main Course"
-          },
-          "available": {
-            "type": "boolean",
-            "description": "Whether the menu item is currently available",
-            "example": true
+            "example": 12.5
           }
-        },
+        }
+      },
+      "CreateMenu": {
+        "type": "object",
         "required": [
           "name",
-          "category",
-          "price",
-          "available"
-        ]
+          "price"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Pizza"
+          },
+          "price": {
+            "type": "number",
+            "example": 12.5
+          }
+        }
       },
       "UpdateMenu": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "example": "Veggie Burger Deluxe",
-            "description": "The name of the menu item"
+            "example": "Updated Pizza"
           },
           "price": {
             "type": "number",
-            "example": 14.99,
-            "description": "The price of the menu item"
-          },
-          "category": {
+            "example": 13
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "required": [
+          "id",
+          "menuId",
+          "quantity",
+          "status"
+        ],
+        "properties": {
+          "id": {
             "type": "string",
-            "description": "The category of the menu item",
-            "example": "Main Course"
+            "example": "abc123"
           },
-          "available": {
-            "type": "boolean",
-            "description": "Whether the menu item is currently available",
-            "example": false
+          "menuId": {
+            "type": "string",
+            "example": "12345"
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 2
+          },
+          "status": {
+            "type": "string",
+            "example": "pending"
           }
         }
       },
       "CreateOrder": {
         "type": "object",
+        "required": [
+          "menuId",
+          "quantity"
+        ],
         "properties": {
           "menuId": {
             "type": "string",
-            "example": "menu_abc123",
-            "description": "The ID of the menu item being ordered"
+            "example": "12345"
           },
           "quantity": {
-            "type": "number",
-            "example": 2,
-            "description": "Quantity of the menu item"
-          },
-          "userId": {
-            "type": "string",
-            "description": "The ID of the user placing the order",
-            "example": "user_abc123"
-          },
-          "totalPrice": {
-            "type": "number",
-            "description": "Total price for the order",
-            "example": 49.99
-          },
-          "status": {
-            "type": "string",
-            "description": "Current status of the order",
-            "enum": [
-              "pending",
-              "completed",
-              "cancelled"
-            ],
-            "example": "pending"
-          }
-        },
-        "required": [
-          "userId",
-          "menuId",
-          "quantity",
-          "totalPrice",
-          "status"
-        ]
-      },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "example": "Invalid input"
+            "type": "integer",
+            "example": 2
           }
         }
       },
       "UpdateOrder": {
         "type": "object",
         "properties": {
+          "quantity": {
+            "type": "integer",
+            "example": 3
+          },
           "status": {
             "type": "string",
-            "description": "Updated status of the order",
-            "enum": [
-              "pending",
-              "completed",
-              "cancelled"
-            ],
             "example": "completed"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "email",
+          "role"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "u123"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@example.com"
+          },
+          "role": {
+            "type": "string",
+            "example": "user"
           }
         }
       },
@@ -152,23 +166,15 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The full name of the user",
             "example": "John Doe"
           },
           "email": {
             "type": "string",
-            "description": "The email address of the user",
-            "example": "john.doe@example.com"
+            "example": "john@example.com"
           },
           "role": {
             "type": "string",
-            "description": "The role assigned to the user",
-            "enum": [
-              "admin",
-              "staff",
-              "customer"
-            ],
-            "example": "customer"
+            "example": "user"
           }
         }
       },
@@ -177,23 +183,24 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The full name of the user",
             "example": "Jane Doe"
           },
           "email": {
             "type": "string",
-            "description": "The email address of the user",
-            "example": "jane.doe@example.com"
+            "example": "jane@example.com"
           },
           "role": {
             "type": "string",
-            "description": "The role assigned to the user",
-            "enum": [
-              "admin",
-              "staff",
-              "customer"
-            ],
-            "example": "staff"
+            "example": "manager"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Invalid input"
           }
         }
       }
@@ -206,10 +213,75 @@
   ],
   "paths": {
     "/menus": {
+      "get": {
+        "summary": "Retrieve a list of menu items",
+        "tags": [
+          "Menus"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            },
+            "description": "Maximum number of menu items to return"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter menu items by category"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved menu items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "menus": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Menu"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "summary": "Create a new menu item",
         "tags": [
           "Menus"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "requestBody": {
           "required": true,
@@ -223,18 +295,20 @@
         },
         "responses": {
           "201": {
-            "description": "Menu item created successfully"
-          }
-        }
-      },
-      "get": {
-        "summary": "Retrieve a list of menu items",
-        "tags": [
-          "Menus"
-        ],
-        "responses": {
-          "200": {
-            "description": "List of menu items retrieved successfully"
+            "description": "Menu item created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Menu"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "403": {
+            "description": "Not authorized to create menu items"
           }
         }
       }
@@ -245,16 +319,51 @@
         "tags": [
           "Menus"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the menu item"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMenu"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Menu item updated successfully"
+            "description": "Menu item updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Menu"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "403": {
+            "description": "Not authorized to update this menu item"
+          },
+          "404": {
+            "description": "Menu item not found"
           }
         }
       },
@@ -262,21 +371,141 @@
         "summary": "Delete a specific menu item",
         "tags": [
           "Menus"
-        ]
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the menu item"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Menu item deleted successfully"
+          },
+          "403": {
+            "description": "Not authorized to delete this menu item"
+          },
+          "404": {
+            "description": "Menu item not found"
+          }
+        }
       }
     },
     "/orders": {
-      "post": {
-        "summary": "Create a new order",
-        "tags": [
-          "Orders"
-        ]
-      },
       "get": {
         "summary": "Retrieve a list of orders",
         "tags": [
           "Orders"
-        ]
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            },
+            "description": "Maximum number of orders to return"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "processing",
+                "completed",
+                "cancelled"
+              ]
+            },
+            "description": "Filter orders by status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Order"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new order",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrder"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "403": {
+            "description": "Not authorized to create orders"
+          }
+        }
       }
     },
     "/orders/{id}": {
@@ -284,27 +513,196 @@
         "summary": "Update a specific order",
         "tags": [
           "Orders"
-        ]
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the order"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrder"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "403": {
+            "description": "Not authorized to update this order"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        }
       },
       "delete": {
         "summary": "Delete a specific order",
         "tags": [
           "Orders"
-        ]
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order deleted successfully"
+          },
+          "403": {
+            "description": "Not authorized to delete this order"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        }
       }
     },
     "/users": {
-      "post": {
-        "summary": "Create a new user",
-        "tags": [
-          "Users"
-        ]
-      },
       "get": {
         "summary": "Retrieve a list of users",
         "tags": [
           "Users"
-        ]
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            },
+            "description": "Maximum number of users to return"
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "admin",
+                "manager",
+                "user"
+              ]
+            },
+            "description": "Filter users by role"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new user",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "403": {
+            "description": "Not authorized to create users"
+          },
+          "409": {
+            "description": "User with this email already exists"
+          }
+        }
       }
     },
     "/users/{id}": {
@@ -312,13 +710,87 @@
         "summary": "Update a specific user",
         "tags": [
           "Users"
-        ]
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the user"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "403": {
+            "description": "Not authorized to update this user"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
       },
       "delete": {
         "summary": "Delete a specific user",
         "tags": [
           "Users"
-        ]
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully"
+          },
+          "403": {
+            "description": "Not authorized to delete this user"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
       }
     }
   },

@@ -1,7 +1,7 @@
 // src/app.ts
 import express from 'express';
 import { consoleLogger, accessLogger, errorLogger } from "../src/api/v1/Middleware/logger";
-import setupSwagger from "../config/swagger";
+import setupSwagger from "../src/config/swagger";
 import errorHandler from "./api/v1/Middleware/errorHandler";
 import userRoutes from './api/v1/routes/userRoutes';
 import menuRoutes from './api/v1/routes/MenuRoutes';
